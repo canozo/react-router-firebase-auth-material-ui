@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { CardHeader, Avatar, IconButton } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-
 const styles = {
   card: {
     maxWidth: 345,
@@ -23,11 +22,13 @@ const styles = {
 
 class Dashboard extends Component {
   classes = {};
-  constructor(props){
+
+  constructor(props) {
     super(props)
     this.classes = props.classes;
   }
-  prueba(){
+
+  prueba() {
     console.log('aaaa');
   }
 
@@ -76,23 +77,21 @@ class Dashboard extends Component {
     );
   }
 
-  
   /*
   <Card>
-            
-            <CardTitle title="Card title" subtitle="Card subtitle" />
-            <CardText>
-              <TextField
-                id = "data"
-                hintText="Hint Text"
-                floatingLabelText="Floating Label Text"
-              />
-            </CardText>
-            <CardActions>
-              <RaisedButton label="Action1" />
-              <RaisedButton label="Action2" primary={true} onClick={() => { this.prueba(); }}/>
-            </CardActions>
-          </Card>
+    <CardTitle title="Card title" subtitle="Card subtitle" />
+    <CardText>
+      <TextField
+        id = "data"
+        hintText="Hint Text"
+        floatingLabelText="Floating Label Text"
+      />
+    </CardText>
+    <CardActions>
+      <RaisedButton label="Action1" />
+      <RaisedButton label="Action2" primary={true} onClick={() => { this.prueba(); }}/>
+    </CardActions>
+  </Card>
   */
 }
 
