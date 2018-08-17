@@ -1,3 +1,5 @@
+Formato de entrega: https://examen-1-e9ea2.firebaseapp.com
+
 Uso de react:
 Uso de Material-UI u otra librería de componentes visuales:
 Autenticación de usuarios con al menos un proveedor de autenticación: google, facebook, etc: 3 %
@@ -18,8 +20,3 @@ Si el usuario está autenticado:
     Ver mis publicaciones (privadas) y las publicaciones de los usuarios a los que sigo: 3% 
 
 Look and Feel: 2%
-
-
-Como punto de partida, se sugiere el uso del siguiente proyecto: https://github.com/elmerdpadilla/react-router-firebase-auth-material-ui
-Formato de entrega: URL a la aplicación en firebase host, github host o cualquier otro host.
-Tiempo límite: Hasta el domingo 19 a la media noche, a través del enlace proporcionado para tal fin.
