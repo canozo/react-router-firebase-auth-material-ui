@@ -71,6 +71,7 @@ class App extends Component {
     loading: true
   };
   componentDidMount() {
+    // see if user is logged in
     this.removeListener = firebaseAuth().onAuthStateChanged(user => {
       if (user) {
         this.setState({

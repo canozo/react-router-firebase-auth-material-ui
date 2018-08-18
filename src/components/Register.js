@@ -15,32 +15,41 @@ export default class Register extends Component {
     super(props);
     this.state = {
       registerError: null,
-      email: '',
-      password: ''
+      email: 'dick',
+      password: 'balls'
     };
   }
 
   handleSubmit = e => {
     e.preventDefault();
+    console.log(this.state.email);
+    console.log(this.state.password);
     auth(this.state.email, this.state.password).catch(e =>
       this.setState(setErrorMsg(e))
     );
   };
+
+  updateInputValue(evt) {
+    this.setState({
+      inputValue: evt.target.value
+    });
+  }
+
   render() {
     return (
       <form onSubmit={this.handleSubmit} style={style.container}>
         <h3>Register</h3>
         <TextField
-          hintText="Enter your Email"
-          floatingLabelText="Email"
-          onChange={(event, newValue) => this.setState({ email: newValue })}
+          hinttext="Enter your Email"
+          floatinglabeltext="Email"
+          onChange={(event) => this.setState({ email: event.target.value })}
         />
         <br />
         <TextField
           type="password"
-          hintText="Enter your Password"
-          floatingLabelText="Password"
-          onChange={(event, newValue) => this.setState({ password: newValue })}
+          hinttext="Enter your Password"
+          floatinglabeltext="Password"
+          onChange={(event) => this.setState({ password: event.target.value })}
         />
         <br />
         {this.state.registerError && (
@@ -54,11 +63,10 @@ export default class Register extends Component {
           </div>
         )}
         <Button
-          label="Register"
-          primary={true}
-          style={style.raisedBtn}
+          // primary={true}
+          // style={style.raisedBtn}
           type="submit"
-        />
+        >Register</ Button>
       </form>
     );
   }

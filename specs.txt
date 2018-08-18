@@ -1,8 +1,4 @@
-Para hacer deploy:
-    npm run build
-    firebase deploy
-
-Formato de entrega: https://examen-1-e9ea2.firebaseapp.com
+https://examen-1-e9ea2.firebaseapp.com
 
 Uso de react:
 Uso de Material-UI u otra librería de componentes visuales:
