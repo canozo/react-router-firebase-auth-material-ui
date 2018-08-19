@@ -39,12 +39,6 @@ class Home extends Component {
             postid={key}
             currentUser={this.state.currentUser}
             classes={this.classes}
-            privacy={post.privacy}
-            author={post.author}
-            authorPic={post.authorPic}
-            title={post.title}
-            body={post.body}
-            stars={post.stars}
           />);
         }
       }

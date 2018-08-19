@@ -19,12 +19,12 @@ class PostCard extends Component {
     this.state = {
       currentUser: props.currentUser,
       key: props.postid,
-      author: props.author,
-      authorPic: props.authorPic,
-      privacy: props.privacy,
-      title: props.title,
-      body: props.body,
-      stars: props.stars
+      author: '',
+      authorPic: '',
+      privacy: '',
+      title: '',
+      body: '',
+      stars: {}
     };
   }
 
@@ -40,7 +40,7 @@ class PostCard extends Component {
       body: this.state.body,
       privacy: this.state.privacy,
       title: this.state.title,
-      uid: this.state.currentUser.uid
+      uid: this.state.uid
     }
 
     if (!this.state.stars) {
@@ -58,7 +58,7 @@ class PostCard extends Component {
     // update db and state
     updates.stars = starry;
     dbRef.update(updates).then(() => {
-      const path = '/user-posts/' + this.state.currentUser.uid + '/' + this.state.key;
+      const path = '/user-posts/' + this.state.uid + '/' + this.state.key;
       firebase.database().ref(path).update(updates);
     });
     this.setState({ stars: starry });
@@ -113,6 +113,27 @@ class PostCard extends Component {
       </Card>
       </div>
     );
+  }
+
+  componentDidMount() {
+    // posts
+    this.dbRefPost = firebase.database().ref('/posts/' + this.state.key);
+    this.dbCallbackPost = this.dbRefPost.on('value', (snap) => {
+      this.setState(snap.val());
+    });
+
+    // user-posts
+    this.dbRefUserPost = firebase.database().ref('/user-posts/' + this.state.key);
+    this.dbCallbackUserPost = this.dbRefUserPost.on('value', (snap) => {
+      this.setState(snap.val());
+    });
+  }
+
+  componentWillUnmount() {
+    // posts
+    this.dbRefPost.off('value', this.dbCallbackPost);
+    // users
+    this.dbRefUserPost.off('value', this.dbCallbackUserPost);
   }
 }
 
