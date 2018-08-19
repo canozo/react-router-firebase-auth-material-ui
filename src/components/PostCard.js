@@ -56,8 +56,11 @@ class PostCard extends Component {
     }
     // update db and state
     updates.stars = starry;
-    dbRef.update(updates);
-    this.setState({ stars: starry })
+    dbRef.update(updates).then(() => {
+      const path = '/user-posts/' + this.state.currentUser.uid + '/' + this.state.key;
+      firebase.database().ref(path).update(updates);
+    });
+    this.setState({ stars: starry });
   }
 
   countStars() {
