@@ -14,9 +14,6 @@ const config = {
   messagingSenderId: "1044383981280"
 };
 
-firebase.initializeApp(config);
-
-
 const uiConfig = {
   signInFlow: 'popup',
   signInSuccessUrl: '/dashboard',
@@ -26,6 +23,7 @@ const uiConfig = {
   ],
 };
 
+export default firebase.initializeApp(config);
 export const db = firebase.firestore();
 export const firebaseAuth = firebase.auth;
 export const firebaseUI = uiConfig;

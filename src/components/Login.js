@@ -3,9 +3,6 @@ import { login, resetPassword } from '../helpers/auth';
 import { firebaseUI, firebaseAuth } from '../config/constants';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-
 function setErrorMsg(error) {
   return {
     loginMessage: error
