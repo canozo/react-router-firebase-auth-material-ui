@@ -133,7 +133,7 @@ class App extends Component {
                   <MenuIcon />
                 </IconButton>
                 <Typography variant="title" color="inherit" className={this.classes.flex}>
-                  Ver. 19275003085a97bc96a6d221791a8b264591d8d8
+                  Ver. 32
                 </Typography>
                   {topbarButtons}
               </Toolbar>
