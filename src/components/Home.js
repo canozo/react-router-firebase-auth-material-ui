@@ -2,14 +2,7 @@ import firebase from '../config/constants';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import { CardHeader, Avatar, IconButton } from '@material-ui/core';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import PostCard from './PostCard';
 
 const styles = {
   card: {
@@ -21,63 +14,6 @@ const styles = {
   },
 };
 
-class CardPreview extends Component {
-  classes = {};
-
-  constructor(props) {
-    super(props)
-    this.classes = props.classes;
-    this.state = {
-      title: props.title,
-      body: props.body
-    };
-  }
-
-  render() {
-    return (
-      <div>
-      <Card className={this.classes.card}>
-      <CardHeader
-            avatar={
-              <Avatar aria-label="Recipe" className={this.classes.avatar}>
-                R
-              </Avatar>
-            }
-            action={
-              <IconButton>
-                <MoreVertIcon />
-              </IconButton>
-            }
-            title={this.state.title}
-            subheader="September 14, 2016"
-          />
-        <CardMedia
-          className={this.classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="headline" component="h2">
-            Lizard
-          </Typography>
-          <Typography component="p">
-            {this.state.body}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" color="primary">
-            Share
-          </Button>
-          <Button size="small" color="primary">
-            Learn More
-          </Button>
-        </CardActions>
-      </Card>
-      </div>
-    );
-  }
-}
-
 class Home extends Component {
   classes = {};
 
@@ -85,39 +21,77 @@ class Home extends Component {
     super(props)
     this.classes = props.classes;
     this.state = {
-      posts: {}
+      currentUser: {},
+      posts: {},
+      users: {}
     };
   }
 
   render() {
+    var result = [];
     if (this.state.posts) {
-      var result = [];
       for (let key in this.state.posts) {
-        let post = this.state.posts[key]
-        result.push(<CardPreview
+        let post = this.state.posts[key];
+        result.push(<PostCard
           key={key}
           classes={this.classes}
+          author={post.author}
+          authorPic={post.authorPic}
           title={post.title}
           body={post.body}
+          starCount={post.starCount}
         />);
       }
       return result;
-    } else {
-      return (
-        <div>loading</div>
-      );
     }
   }
 
+setUser(user) {
+  // if user not in db: add him
+  firebase.database().ref('/users/' + user.uid).on('value', (snap) => {
+    if (!snap.val()) {
+      firebase.database().ref('/users/' + user.uid).set({
+        email: user.email,
+        profile_picture: user.photoURL,
+        username: user.displayName
+      });
+    }
+  });
+
+  // add user info to state
+  this.setState({ currentUser: {
+    uid: user.uid,
+    email: user.email,
+    profile_picture: user.photoURL,
+    username: user.displayName
+  } });
+}
+
   componentDidMount() {
-    this.firebaseRef = firebase.database().ref('/posts');
-    this.firebaseCallback = this.firebaseRef.on('value', (snap) => {
+    // posts
+    this.dbRefPosts = firebase.database().ref('/posts');
+    this.dbCallbackPosts = this.dbRefPosts.on('value', (snap) => {
       this.setState({ posts: snap.val() });
     });
+
+    // users
+    this.dbRefUsers = firebase.database().ref('/users');
+    this.dbCallbackUsers = this.dbRefUsers.on('value', (snap) => {
+      this.setState({ users: snap.val() });
+    });
+
+    // other verifications
+    var user = firebase.auth().currentUser;
+    if (user) {
+      this.setUser(user);
+    }
   }
 
   componentWillUnmount() {
-    this.firebaseRef.off('value', this.firebaseCallback);
+    // posts
+    this.dbRefPosts.off('value', this.dbCallbackPosts);
+    // users
+    this.dbRefUsers.off('value', this.dbCallbackUsers);
   }
 
   /*

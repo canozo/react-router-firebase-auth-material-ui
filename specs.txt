@@ -1,22 +1,24 @@
-https://examen-1-e9ea2.firebaseapp.com
+Si esta autenticado puede crear sus propias publicaciones.
+La publicación debe tener un tema, un mensaje y se debe especificar el acceso: Publico, Privado, Mis seguidores
+    Publico: Todos los usuarios de la aplicación, autenticados y no autenticados pueden ver las publicaciones
+    Privado: Solo el usuario que publica, vera los mensajes
+    Mis seguidores: Solo los seguidores del usuario veran la publicación
 
-Uso de react:
-Uso de Material-UI u otra librería de componentes visuales:
-Autenticación de usuarios con al menos un proveedor de autenticación: google, facebook, etc: 3 %
+Publicacion specs:
+    author
+    authorPic
+    body
+    starCount
+    title
+    privacy -> new
+    uid
 
-Si el usuario no está autenticado
-    Puede leer los post publicos y autenticarse.
+Se le puede dar comentario
 
-Si el usuario está autenticado:
-    Puede crear sus propias publicaciones. La publicación debe tener un tema y un mensaje  2%
-    Además, para cada publicación, se debe especificar el acceso: Publico, Privado, Mis seguidores:
-        Publico: Todos los usuarios de la aplicación, autenticados y no autenticados pueden ver las publicaciones: 2%
-        Privado: Solo el usuario que publica, vera los mensajes: 2%
-        Mis seguidores: Solo los seguidores del usuario veran la publicación: 2%
-    Además, cada publicación (según sea visible) podra ser comentada por los usuarios autenticados: 2%
-    Tambien, cada publicación podrá ser calificada (like, estrellitas, etc). Cada usuario, solo puede calificar una vez (o quitar su calificación): 3%
-    Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero (y según el acceso concedido al momento de realizar la publicación): 2%
-    Si el post es público, permitir seguir al usuario que publicó: 2%
-    Ver mis publicaciones (privadas) y las publicaciones de los usuarios a los que sigo: 3% 
+Se le puede dar laik
 
-Look and Feel: 2%
+Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero
+
+Si el post es público, permitir seguir al usuario que publicó
+
+Ver mis publicaciones y las publicaciones de los usuarios a los que sigo

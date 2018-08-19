@@ -15,15 +15,13 @@ export default class Register extends Component {
     super(props);
     this.state = {
       registerError: null,
-      email: 'dick',
-      password: 'balls'
+      email: '',
+      password: ''
     };
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state.email);
-    console.log(this.state.password);
     auth(this.state.email, this.state.password).catch(e =>
       this.setState(setErrorMsg(e))
     );
