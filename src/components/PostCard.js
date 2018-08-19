@@ -46,8 +46,9 @@ class PostCard extends Component {
     if (!this.state.stars) {
       // no stars have been added
       starry[this.state.currentUser.uid] = true;
-    } else if (!this.state.stars[this.state.currentUser.uid]) {
+    } else if (!(this.state.currentUser.uid in this.state.stars)) {
       // stars have been added but maybe the user hasn't added any
+      starry = this.state.stars;
       starry[this.state.currentUser.uid] = true;
     } else {
       // user has added stars

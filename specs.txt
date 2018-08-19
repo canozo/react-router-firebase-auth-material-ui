@@ -4,8 +4,6 @@ Tipos de acceso:
 
 Se le puede dar comentario
 
-Se le puede dar laik
-
 Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero
 
 Si el post es público, permitir seguir al usuario que publicó
