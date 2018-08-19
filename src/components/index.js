@@ -90,7 +90,7 @@ class App extends Component {
   componentWillUnmount() {
     this.removeListener();
   }
-    
+
   render() {
     const authButtons = this.state.authed ? (
       <Button
@@ -126,18 +126,18 @@ class App extends Component {
       <h1>Loading</h1>
     ) : (
           <div className={this.classes.root}>
-            
+
             <AppBar position="static"  >
               <Toolbar>
                 <IconButton  className={this.classes.menuButton} color="inherit" aria-label="Menu">
                   <MenuIcon />
                 </IconButton>
                 <Typography variant="title" color="inherit" className={this.classes.flex}>
-                  aa
-                  </Typography>
-                  {topbarButtons}    
+                  Ver. 19275003085a97bc96a6d221791a8b264591d8d8
+                </Typography>
+                  {topbarButtons}
               </Toolbar>
-              
+
             </AppBar>
             <br/>
             <br/>
@@ -165,7 +165,7 @@ class App extends Component {
               </div>
             </div>
           </div>
-        
+
       );
   }
 }
