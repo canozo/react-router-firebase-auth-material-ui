@@ -1,17 +1,7 @@
-Si esta autenticado puede crear sus propias publicaciones.
 La publicación debe tener un tema, un mensaje y se debe especificar el acceso: Publico, Privado, Mis seguidores
     Publico: Todos los usuarios de la aplicación, autenticados y no autenticados pueden ver las publicaciones
     Privado: Solo el usuario que publica, vera los mensajes
     Mis seguidores: Solo los seguidores del usuario veran la publicación
-
-Publicacion specs:
-    author
-    authorPic
-    body
-    starCount
-    title
-    privacy -> new
-    uid
 
 Se le puede dar comentario
 

@@ -19,6 +19,7 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      currentUser: {},
       title: '',
       body: '',
       privacy: ''
@@ -26,16 +27,29 @@ class Dashboard extends Component {
   }
 
   handleSubmit(event) {
-    console.log(event)
     event.preventDefault();
-    // auth(this.state.email, this.state.password).catch(e =>
-    //   this.setState(setErrorMsg(e))
-    // );
+
+    // build the post
+    const newPost = {
+      author: this.state.currentUser.username,
+      authorPic: this.state.currentUser.profile_picture,
+      body: this.state.body,
+      starCount: 0,
+      title: this.state.title,
+      uid: this.state.currentUser.uid
+    };
+
+    // post to posts and user-posts
+    firebase.database().ref('/posts').push(newPost).then((snap) => {
+      const key = snap.key;
+      const path = '/user-posts/' + this.state.currentUser.uid + '/' + key;
+      firebase.database().ref(path).set(newPost);
+    });
   };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit} style={style.container}>
+      <form onSubmit={this.handleSubmit.bind(this)} style={style.container}>
         <h3>New post</h3>
         <TextField
           hinttext="Post title"
@@ -63,32 +77,47 @@ class Dashboard extends Component {
     );
   }
 
+  setUser(user) {
+    // if user not in db: add him
+    firebase.database().ref('/users/' + user.uid).on('value', (snap) => {
+      if (!snap.val()) {
+        firebase.database().ref('/users/' + user.uid).set({
+          email: user.email,
+          profile_picture: user.photoURL,
+          username: user.displayName
+        });
+      }
+    });
+
+    // add user info to state
+    this.setState({ currentUser: {
+      uid: user.uid,
+      email: user.email,
+      profile_picture: user.photoURL,
+      username: user.displayName
+    } });
+  }
+
   componentDidMount() {
+    // posts
     this.dbRefPosts = firebase.database().ref('/posts');
+
+    // user-posts
     this.dbRefUserPosts = firebase.database().ref('/user-posts');
+
+    // other verifications
+    var user = firebase.auth().currentUser;
+    if (user) {
+      this.setUser(user);
+    }
   }
 
   componentWillUnmount() {
-    this.dbRefPosts.off('value', this.firebaseCallback);
-    this.dbRefUserPosts.off('value', this.firebaseCallback);
+    // posts
+    // this.dbRefPosts.off('value', this.dbCallbackPosts);
+    // user-posts
+    // this.dbRefUserPosts.off('value', this.dbCallbackUserPosts);
   }
-
-  /*
-  <Card>
-    <CardTitle title="Card title" subtitle="Card subtitle" />
-    <CardText>
-      <TextField
-        id = "data"
-        hintText="Hint Text"
-        floatingLabelText="Floating Label Text"
-      />
-    </CardText>
-    <CardActions>
-      <RaisedButton label="Action1" />
-      <RaisedButton label="Action2" primary={true} onClick={() => { this.prueba(); }}/>
-    </CardActions>
-  </Card>
-  */
 }
 
 const raisedBtn = {
