@@ -5,6 +5,13 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../../config/constants';
 
+import green from '@material-ui/core/colors/green';
+import Radio from '@material-ui/core/Radio';
+import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+
 const styles = {
   card: {
     maxWidth: 345,
@@ -13,21 +20,40 @@ const styles = {
     height: 0,
     paddingTop: '56.25%',
   },
+  root: {
+    color: green[600],
+    '&$checked': {
+      color: green[500],
+    },
+  },
+  checked: {},
+  size: {
+    width: 40,
+    height: 40,
+  },
+  sizeIcon: {
+    fontSize: 20,
+  }
 };
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {
       currentUser: {},
       title: '',
       body: '',
-      privacy: ''
+      privacy: 'public'
     };
   }
 
+  handleChange = event => {
+    this.setState({ privacy: event.target.value });
+  };
+
   handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
 
     // build the post
     const newPost = {
@@ -36,11 +62,12 @@ class Dashboard extends Component {
       body: this.state.body,
       starCount: 0,
       title: this.state.title,
+      privacy: this.state.privacy,
       uid: this.state.currentUser.uid
     };
 
     // post to posts and user-posts
-    firebase.database().ref('/posts').push(newPost).then((snap) => {
+    this.dbRefPosts.push(newPost).then((snap) => {
       const key = snap.key;
       const path = '/user-posts/' + this.state.currentUser.uid + '/' + key;
       firebase.database().ref(path).set(newPost);
@@ -49,7 +76,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit.bind(this)} style={style.container}>
+      <form onSubmit={this.handleSubmit} style={style.container}>
         <h3>New post</h3>
         <TextField
           hinttext="Post title"
@@ -63,10 +90,38 @@ class Dashboard extends Component {
           onChange={(event) => this.setState({ body: event.target.value })}
         />
         <br />
-        <TextField
-          hinttext="Privacy settings"
-          floatinglabeltext="Privacy"
-          onChange={(event) => this.setState({ privacy: event.target.value })}
+        <FormControlLabel
+          value="female"
+          control={<Radio
+            checked={this.state.privacy === 'public'}
+            onChange={this.handleChange}
+            value="public"
+            name="radio-button-demo"
+            aria-label="A"
+          />}
+          label="Public"
+        />
+        <FormControlLabel
+          value="male"
+          control={<Radio
+            checked={this.state.privacy === 'private'}
+            onChange={this.handleChange}
+            value="private"
+            name="radio-button-demo"
+            aria-label="B"
+          />}
+          label="Private"
+        />
+        <FormControlLabel
+          value="other"
+          control={<Radio
+            checked={this.state.privacy === 'followers'}
+            onChange={this.handleChange}
+            value="followers"
+            name="radio-button-demo"
+            aria-label="C"
+          />}
+          label="Followers"
         />
         <br />
         <Button
@@ -103,7 +158,7 @@ class Dashboard extends Component {
     this.dbRefPosts = firebase.database().ref('/posts');
 
     // user-posts
-    this.dbRefUserPosts = firebase.database().ref('/user-posts');
+    // this.dbRefUserPosts = firebase.database().ref('/user-posts');
 
     // other verifications
     var user = firebase.auth().currentUser;

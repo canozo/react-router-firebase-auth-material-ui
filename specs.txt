@@ -1,5 +1,4 @@
-La publicación debe tener un tema, un mensaje y se debe especificar el acceso: Publico, Privado, Mis seguidores
-    Publico: Todos los usuarios de la aplicación, autenticados y no autenticados pueden ver las publicaciones
+Tipos de acceso:
     Privado: Solo el usuario que publica, vera los mensajes
     Mis seguidores: Solo los seguidores del usuario veran la publicación
 
@@ -11,4 +10,6 @@ Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero
 
 Si el post es público, permitir seguir al usuario que publicó
 
-Ver mis publicaciones y las publicaciones de los usuarios a los que sigo
+Ver mis publicaciones
+
+Ver las publicaciones de los usuarios a los que sigo

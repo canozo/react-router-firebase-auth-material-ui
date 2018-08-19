@@ -32,15 +32,18 @@ class Home extends Component {
     if (this.state.posts) {
       for (let key in this.state.posts) {
         let post = this.state.posts[key];
-        result.push(<PostCard
-          key={key}
-          classes={this.classes}
-          author={post.author}
-          authorPic={post.authorPic}
-          title={post.title}
-          body={post.body}
-          starCount={post.starCount}
-        />);
+        // only show public posts
+        if (post.privacy === 'public') {
+          result.push(<PostCard
+            key={key}
+            classes={this.classes}
+            author={post.author}
+            authorPic={post.authorPic}
+            title={post.title}
+            body={post.body}
+            starCount={post.starCount}
+          />);
+        }
       }
       return result;
     }
