@@ -52,6 +52,7 @@ class PostCard extends Component {
       starry[this.state.currentUser.uid] = true;
     } else {
       // user has added stars
+      starry = this.state.stars;
       starry[this.state.currentUser.uid] = !this.state.stars[this.state.currentUser.uid];
     }
     // update db and state
