@@ -4,13 +4,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../../config/constants';
-
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import green from '@material-ui/core/colors/green';
 import Radio from '@material-ui/core/Radio';
-import RadioButtonUncheckedIcon from '@material-ui/icons/RadioButtonUnchecked';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const styles = {
   card: {
@@ -60,7 +56,7 @@ class Dashboard extends Component {
       author: this.state.currentUser.username,
       authorPic: this.state.currentUser.profile_picture,
       body: this.state.body,
-      starCount: 0,
+      stars: {},
       title: this.state.title,
       privacy: this.state.privacy,
       uid: this.state.currentUser.uid

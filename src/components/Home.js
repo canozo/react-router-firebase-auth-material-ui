@@ -41,7 +41,7 @@ class Home extends Component {
             authorPic={post.authorPic}
             title={post.title}
             body={post.body}
-            starCount={post.starCount}
+            stars={post.stars}
           />);
         }
       }
