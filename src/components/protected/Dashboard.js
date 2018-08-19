@@ -87,35 +87,32 @@ class Dashboard extends Component {
         />
         <br />
         <FormControlLabel
-          value="female"
+          value="public"
           control={<Radio
             checked={this.state.privacy === 'public'}
             onChange={this.handleChange}
             value="public"
             name="radio-button-demo"
-            aria-label="A"
           />}
           label="Public"
         />
         <FormControlLabel
-          value="male"
+          value="private"
           control={<Radio
             checked={this.state.privacy === 'private'}
             onChange={this.handleChange}
             value="private"
             name="radio-button-demo"
-            aria-label="B"
           />}
           label="Private"
         />
         <FormControlLabel
-          value="other"
+          value="followers"
           control={<Radio
             checked={this.state.privacy === 'followers'}
             onChange={this.handleChange}
             value="followers"
             name="radio-button-demo"
-            aria-label="C"
           />}
           label="Followers"
         />

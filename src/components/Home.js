@@ -36,7 +36,10 @@ class Home extends Component {
         if (post.privacy === 'public') {
           result.push(<PostCard
             key={key}
+            postid={key}
+            currentUser={this.state.currentUser}
             classes={this.classes}
+            privacy={post.privacy}
             author={post.author}
             authorPic={post.authorPic}
             title={post.title}
@@ -46,6 +49,10 @@ class Home extends Component {
         }
       }
       return result;
+    } else {
+      return (
+        <div>Be the first one to post on the dashboard!</div>
+      );
     }
   }
 
