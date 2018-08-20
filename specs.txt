@@ -1,9 +1,3 @@
-Tipos de acceso:
-    Privado: Solo el usuario que publica, vera los mensajes
-    Mis seguidores: Solo los seguidores del usuario veran la publicación
-
 Se le puede dar comentario
 
 Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero
-
-Ver mis publicaciones

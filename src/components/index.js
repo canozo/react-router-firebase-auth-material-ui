@@ -6,6 +6,7 @@ import Login from './Login';
 import Register from './Register';
 import Home from './Home';
 import Followed from './protected/Followed';
+import MyPosts from './protected/MyPosts';
 import Dashboard from './protected/Dashboard';
 import { logout } from '../helpers/auth';
 import { firebaseAuth } from '../config/constants';
@@ -120,6 +121,9 @@ class App extends Component {
         <Link to="/followed">
           <Button  style={{ color: '#fff' }} >Followed</Button>
         </Link>
+        <Link to="/myposts">
+          <Button  style={{ color: '#fff' }} >My Posts</Button>
+        </Link>
         <Link to="/dashboard">
           <Button  style={{ color: '#fff' }} >Dashboard</Button>
         </Link>
@@ -163,6 +167,11 @@ class App extends Component {
                     authed={this.state.authed}
                     path="/followed"
                     component={Followed}
+                  />
+                  <PrivateRoute
+                    authed={this.state.authed}
+                    path="/myposts"
+                    component={MyPosts}
                   />
                   <PrivateRoute
                     authed={this.state.authed}
