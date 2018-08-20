@@ -5,6 +5,7 @@ import { Route, BrowserRouter, Link, Redirect, Switch } from 'react-router-dom';
 import Login from './Login';
 import Register from './Register';
 import Home from './Home';
+import Followed from './protected/Followed';
 import Dashboard from './protected/Dashboard';
 import { logout } from '../helpers/auth';
 import { firebaseAuth } from '../config/constants';
@@ -116,6 +117,9 @@ class App extends Component {
         <Link to="/" color="inherit">
           <Button style={{ color: '#fff' }}>Home</Button>
         </Link>
+        <Link to="/followed">
+          <Button  style={{ color: '#fff' }} >Followed</Button>
+        </Link>
         <Link to="/dashboard">
           <Button  style={{ color: '#fff' }} >Dashboard</Button>
         </Link>
@@ -133,7 +137,7 @@ class App extends Component {
                   <MenuIcon />
                 </IconButton>
                 <Typography variant="title" color="inherit" className={this.classes.flex}>
-                  Ver. 33
+                  Ver. 34
                 </Typography>
                   {topbarButtons}
               </Toolbar>
@@ -154,6 +158,11 @@ class App extends Component {
                     authed={this.state.authed}
                     path="/register"
                     component={Register}
+                  />
+                  <PrivateRoute
+                    authed={this.state.authed}
+                    path="/followed"
+                    component={Followed}
                   />
                   <PrivateRoute
                     authed={this.state.authed}
