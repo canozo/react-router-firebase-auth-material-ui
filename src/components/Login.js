@@ -41,16 +41,3 @@ export default class Login extends Component {
           );
   }
 }
-
-const raisedBtn = {
-  margin: 15
-};
-
-const container = {
-  textAlign: 'center'
-};
-
-const style = {
-  raisedBtn,
-  container
-};

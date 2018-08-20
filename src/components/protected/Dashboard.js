@@ -39,7 +39,8 @@ class Dashboard extends Component {
       currentUser: {},
       title: '',
       body: '',
-      privacy: 'public'
+      privacy: 'public',
+      serverTime: 0
     };
   }
 
@@ -58,7 +59,8 @@ class Dashboard extends Component {
       stars: {},
       title: this.state.title,
       privacy: this.state.privacy,
-      uid: this.state.currentUser.uid
+      uid: this.state.currentUser.uid,
+      serverTime: this.state.serverTime
     };
 
     // post to posts and user-posts
@@ -146,6 +148,13 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    this.dbRefDate = firebase.database().ref('/.info/serverTimeOffset');
+    this.dbCallbackDate = this.dbRefDate.on('value', (offset) => {
+      var offsetVal = offset.val() || 0;
+      var time = Date.now() + offsetVal;
+      this.setState({ serverTime: time });
+    });
+
     // posts
     this.dbRefPosts = firebase.database().ref('/posts');
 
@@ -164,6 +173,8 @@ class Dashboard extends Component {
     // this.dbRefPosts.off('value', this.dbCallbackPosts);
     // user-posts
     // this.dbRefUserPosts.off('value', this.dbCallbackUserPosts);
+    // date
+    this.dbRefDate.off('value', this.dbCallbackDate);
   }
 }
 

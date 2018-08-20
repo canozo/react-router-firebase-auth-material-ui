@@ -58,6 +58,20 @@ class Followed extends Component {
     return true;
   }
 
+  sortByDate(arr) {
+    return arr.sort((a, b) => {
+      let na = a.props.datetime;
+      let nb = b.props.datetime;
+      if (na < nb) {
+        return 1;
+      }
+      if (na > nb) {
+        return -1;
+      }
+      return 0;
+    });
+  }
+
   render() {
     var result = [];
     if (this.state.posts) {
@@ -71,6 +85,7 @@ class Followed extends Component {
             uid={post.uid}
             currentUser={this.state.currentUser}
             classes={this.classes}
+            datetime={post.serverTime}
           />);
         }
       }
@@ -79,7 +94,7 @@ class Followed extends Component {
           <div>There's nothing here yet!</div>
         );
       }
-      return result;
+      return this.sortByDate(result);
     } else {
       return (
         <div>There's nothing here yet!</div>
@@ -87,26 +102,26 @@ class Followed extends Component {
     }
   }
 
-setUser(user) {
-  // if user not in db: add him
-  firebase.database().ref('/users/' + user.uid).on('value', (snap) => {
-    if (!snap.val()) {
-      firebase.database().ref('/users/' + user.uid).set({
-        email: user.email,
-        profile_picture: user.photoURL,
-        username: user.displayName
-      });
-    }
-  });
+  setUser(user) {
+    // if user not in db: add him
+    firebase.database().ref('/users/' + user.uid).on('value', (snap) => {
+      if (!snap.val()) {
+        firebase.database().ref('/users/' + user.uid).set({
+          email: user.email,
+          profile_picture: user.photoURL,
+          username: user.displayName
+        });
+      }
+    });
 
-  // add user info to state
-  this.setState({ currentUser: {
-    uid: user.uid,
-    email: user.email,
-    profile_picture: user.photoURL,
-    username: user.displayName
-  } });
-}
+    // add user info to state
+    this.setState({ currentUser: {
+      uid: user.uid,
+      email: user.email,
+      profile_picture: user.photoURL,
+      username: user.displayName
+    } });
+  }
 
   componentDidMount() {
     // posts

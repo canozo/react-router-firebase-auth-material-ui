@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 
 // Required for side-effects
 require('firebase/firestore');

@@ -23,6 +23,7 @@ class PostCard extends Component {
       uid: props.uid,
       currentUser: props.currentUser,
       key: props.postid,
+      datetime: props.datetime,
       author: '',
       authorPic: '',
       privacy: '',
@@ -118,7 +119,7 @@ class PostCard extends Component {
 
   render() {
     return (
-      <div>
+      <div dateTime={this.state.datetime.toString()}>
         <Card className={this.classes.card}>
           <CardHeader
             avatar={
