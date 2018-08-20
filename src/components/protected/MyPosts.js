@@ -53,6 +53,11 @@ class MyPosts extends Component {
           />);
         }
       }
+      if (result.length === 0) {
+        return (
+          <div>There's nothing here yet!</div>
+        );
+      }
       return result;
     } else {
       return (
