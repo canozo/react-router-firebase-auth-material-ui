@@ -8,6 +8,7 @@ import { CardHeader, Avatar, IconButton } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../config/constants';
+import Comment from './Comment';
 
 class PostCard extends Component {
   classes = {};
@@ -17,6 +18,7 @@ class PostCard extends Component {
     this.handleStars = this.handleStars.bind(this);
     this.handleFollow = this.handleFollow.bind(this);
     this.followStatus = this.followStatus.bind(this);
+    this.handleComment = this.handleComment.bind(this);
     this.classes = props.classes;
 
     this.state = {
@@ -83,8 +85,23 @@ class PostCard extends Component {
   }
 
   handleComment(event) {
-    // from this.state.comment, upload it to the database
-    // when it's uploaded, if the comment listener works it should update maybe
+    // original comments
+    var updatedComments = this.state.comments || {};
+    // new comment
+    const newComment = {
+      author: this.state.currentUser.username,
+      text: this.state.commentDraft,
+      uid: this.state.currentUser.uid
+    };
+
+    // push new comment to db
+    this.dbRefComments.push(newComment).then((snap) => {
+      // get new comment key and add it to state
+      const key = snap.key;
+      updatedComments[key] = newComment;
+      this.setState(updatedComments);
+      this.setState({ commentDraft: '' });
+    });
   }
 
   handleFollow(event) {
@@ -118,6 +135,16 @@ class PostCard extends Component {
   }
 
   render() {
+    var comments = [];
+    for (let key in this.state.comments) {
+      let comment = this.state.comments[key];
+      comments.push(<Comment
+        key={key}
+        author={comment.author}
+        text={comment.text}
+        uid={comment.uid}
+      />);
+    }
     return (
       <div dateTime={this.state.datetime.toString()}>
         <Card className={this.classes.card}>
@@ -145,10 +172,13 @@ class PostCard extends Component {
             {this.state.body}
           </Typography>
           <br/>
+          {comments}
+          <br/>
           <Typography component="p">
             Add a comment:
           </Typography>
           <TextField
+            value={this.state.commentDraft}
             hinttext="Enter your comment"
             floatinglabeltext="Comment"
             onChange={(event) => this.setState({ commentDraft: event.target.value })}
@@ -185,6 +215,12 @@ class PostCard extends Component {
     this.dbCallbackFollowers = this.dbRefFollowers.on('value', (snap) => {
       this.setState({ followers: snap.val() });
     });
+
+    // comments
+    this.dbRefComments = firebase.database().ref('/comments/' + this.state.key);
+    this.dbCallbackComments = this.dbRefComments.on('value', (snap) => {
+      this.setState({ comments: snap.val() });
+    });
   }
 
   componentWillUnmount() {
@@ -194,6 +230,8 @@ class PostCard extends Component {
     this.dbRefUserPost.off('value', this.dbCallbackUserPost);
     // followers
     this.dbRefFollowers.off('value', this.dbCallbackFollowers);
+    // comments
+    this.dbRefComments.off('value', this.dbCallbackComments);
   }
 }
 
