@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import PostCard from '../PostCard';
+import '../idk.css';
 
 const styles = {
   card: {
@@ -94,7 +95,9 @@ class Followed extends Component {
           <div>There's nothing here yet!</div>
         );
       }
-      return this.sortByDate(result);
+      return (
+        <div className='rows'>{this.sortByDate(result)}</div>
+      );
     } else {
       return (
         <div>There's nothing here yet!</div>

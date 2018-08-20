@@ -9,6 +9,7 @@ import StarIcon from '@material-ui/icons/Star';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../config/constants';
 import Comment from './Comment';
+import './idk.css';
 
 class PostCard extends Component {
   classes = {};
@@ -146,7 +147,7 @@ class PostCard extends Component {
       />);
     }
     return (
-      <div dateTime={this.state.datetime.toString()}>
+      <div className='row' dateTime={this.state.datetime.toString()}>
         <Card className={this.classes.card}>
           <CardHeader
             avatar={
