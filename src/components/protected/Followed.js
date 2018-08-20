@@ -34,6 +34,11 @@ class Followed extends Component {
       return false;
     }
 
+    if (!this.state.followers) {
+      // there are no followers in the db yet
+      return false;
+    }
+
     if (!(post.uid in this.state.followers)) {
       // user doesn't have followers
       return false;
@@ -68,6 +73,11 @@ class Followed extends Component {
             classes={this.classes}
           />);
         }
+      }
+      if (result.length === 0) {
+        return (
+          <div>There's nothing here yet!</div>
+        );
       }
       return result;
     } else {
