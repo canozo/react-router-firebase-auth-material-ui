@@ -37,6 +37,7 @@ class Home extends Component {
           result.push(<PostCard
             key={key}
             postid={key}
+            uid={post.uid}
             currentUser={this.state.currentUser}
             classes={this.classes}
           />);
@@ -97,23 +98,6 @@ setUser(user) {
     // users
     this.dbRefUsers.off('value', this.dbCallbackUsers);
   }
-
-  /*
-  <Card>
-    <CardTitle title="Card title" subtitle="Card subtitle" />
-    <CardText>
-      <TextField
-        id = "data"
-        hintText="Hint Text"
-        floatingLabelText="Floating Label Text"
-      />
-    </CardText>
-    <CardActions>
-      <RaisedButton label="Action1" />
-      <RaisedButton label="Action2" primary={true} onClick={() => { this.prueba(); }}/>
-    </CardActions>
-  </Card>
-  */
 }
 
 Home.propTypes = {

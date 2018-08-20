@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { CardHeader, Avatar, IconButton } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
+import TextField from '@material-ui/core/TextField';
 import firebase from '../config/constants';
 
 class PostCard extends Component {
@@ -14,9 +15,12 @@ class PostCard extends Component {
   constructor(props) {
     super(props);
     this.handleStars = this.handleStars.bind(this);
+    this.handleFollow = this.handleFollow.bind(this);
+    this.followStatus = this.followStatus.bind(this);
     this.classes = props.classes;
 
     this.state = {
+      uid: props.uid,
       currentUser: props.currentUser,
       key: props.postid,
       author: '',
@@ -24,7 +28,10 @@ class PostCard extends Component {
       privacy: '',
       title: '',
       body: '',
-      stars: {}
+      stars: {},
+      followers: {},
+      comments: {},
+      commentDraft: ''
     };
   }
 
@@ -74,6 +81,41 @@ class PostCard extends Component {
     return count;
   }
 
+  handleComment(event) {
+    // from this.state.comment, upload it to the database
+    // when it's uploaded, if the comment listener works it should update maybe
+  }
+
+  handleFollow(event) {
+    var followy = {};
+
+    if (!this.state.followers) {
+      // there are no followers yet so we create a new node
+      followy[this.state.currentUser.uid] = true;
+    } else if (!(this.state.currentUser.uid in this.state.followers)) {
+      // there are followers but the user isnt' following
+      followy = this.state.followers;
+      followy[this.state.currentUser.uid] = true;
+    } else {
+      // there are followers and the user has followed, invert result
+      followy = this.state.followers;
+      followy[this.state.currentUser.uid] = !this.state.followers[this.state.currentUser.uid];
+    }
+    // update db and state
+    this.dbRefFollowers.update(followy);
+    this.setState({ followers: followy });
+  }
+
+  followStatus() {
+    if (this.state.followers
+      && this.state.currentUser.uid in this.state.followers
+      && this.state.followers[this.state.currentUser.uid] === true) {
+        return 'Unfollow';
+      } else {
+        return 'Follow';
+      }
+  }
+
   render() {
     return (
       <div>
@@ -101,13 +143,22 @@ class PostCard extends Component {
           <Typography component="p">
             {this.state.body}
           </Typography>
+          <br/>
+          <Typography component="p">
+            Add a comment:
+          </Typography>
+          <TextField
+            hinttext="Enter your comment"
+            floatinglabeltext="Comment"
+            onChange={(event) => this.setState({ commentDraft: event.target.value })}
+          />
         </CardContent>
         <CardActions>
-          <Button size="small" color="primary">
-            Share
+          <Button size="small" color="primary" onClick={this.handleComment}>
+            Post comment
           </Button>
-          <Button size="small" color="primary">
-            Learn More
+          <Button size="small" color="primary" onClick={this.handleFollow}>
+            { this.followStatus() }
           </Button>
         </CardActions>
       </Card>
@@ -127,6 +178,12 @@ class PostCard extends Component {
     this.dbCallbackUserPost = this.dbRefUserPost.on('value', (snap) => {
       this.setState(snap.val());
     });
+
+    // followers
+    this.dbRefFollowers = firebase.database().ref('/followers/' + this.state.uid);
+    this.dbCallbackFollowers = this.dbRefFollowers.on('value', (snap) => {
+      this.setState({ followers: snap.val() });
+    });
   }
 
   componentWillUnmount() {
@@ -134,6 +191,8 @@ class PostCard extends Component {
     this.dbRefPost.off('value', this.dbCallbackPost);
     // users
     this.dbRefUserPost.off('value', this.dbCallbackUserPost);
+    // followers
+    this.dbRefFollowers.off('value', this.dbCallbackFollowers);
   }
 }
 

@@ -6,8 +6,6 @@ Se le puede dar comentario
 
 Las publicaciones deberan estár ordenadas, mostrando las mas recientes primero
 
-Si el post es público, permitir seguir al usuario que publicó
-
 Ver mis publicaciones
 
 Ver las publicaciones de los usuarios a los que sigo
