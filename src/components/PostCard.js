@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { CardHeader, Avatar, IconButton } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
+import DeleteIcon from '@material-ui/icons/Delete';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../config/constants';
 import Comment from './Comment';
@@ -17,6 +18,7 @@ class PostCard extends Component {
   constructor(props) {
     super(props);
     this.handleStars = this.handleStars.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     this.handleFollow = this.handleFollow.bind(this);
     this.followStatus = this.followStatus.bind(this);
     this.handleComment = this.handleComment.bind(this);
@@ -73,6 +75,37 @@ class PostCard extends Component {
       firebase.database().ref(path).update(updates);
     });
     this.setState({ stars: starry });
+  }
+
+  handleDelete(event) {
+    // backup post to save on deleted
+    const backupComments = this.state.comments;
+    const backupKey = this.state.key;
+    const backupPost = {
+      author: this.state.author,
+      authorPic: this.state.authorPic,
+      body: this.state.body,
+      stars: this.state.stars,
+      title: this.state.title,
+      privacy: this.state.privacy,
+      uid: this.state.uid,
+      serverTime: this.state.datetime
+    };
+
+    // confirm that the user deleting is the post author
+    if (this.state.uid === this.state.currentUser.uid) {
+      // delete from the database
+      firebase.database().ref('/posts/' + this.state.key).remove();
+      firebase.database().ref('/user-posts/' + this.state.key).remove();
+      firebase.database().ref('/comments/' + this.state.key).remove();
+
+      // save backup on the database
+      firebase.database().ref('/deleted/' + backupKey).set(backupPost);
+      firebase.database().ref('/deleted-comments/' + backupKey).set(backupComments);
+
+      // update state, current postcard will be removed
+      this.setState({});
+    }
   }
 
   countStars() {
@@ -135,6 +168,30 @@ class PostCard extends Component {
       }
   }
 
+  getIcons() {
+    var icons = [];
+
+    // only show delete option for the respective authors
+    if (this.state.uid === this.state.currentUser.uid) {
+      icons.push(
+        <IconButton key='delete' onClick={this.handleDelete}>
+          <DeleteIcon />
+        </IconButton>
+      );
+    }
+    icons.push(
+      <IconButton key='star' onClick={this.handleStars}>
+      <StarIcon />
+    </IconButton>
+    );
+
+    return (
+      <div>
+        {icons}
+      </div>
+    );
+  }
+
   render() {
     var comments = [];
     for (let key in this.state.comments) {
@@ -157,11 +214,7 @@ class PostCard extends Component {
                 className={this.classes.avatar}
               />
             }
-            action={
-              <IconButton onClick={this.handleStars}>
-                <StarIcon />
-              </IconButton>
-            }
+            action={this.getIcons()}
             title={this.state.author}
             subheader={'Star count: ' + (this.state.stars ? this.countStars() : 0)}
           />
