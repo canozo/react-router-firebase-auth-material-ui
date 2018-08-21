@@ -168,7 +168,13 @@ class PostCard extends Component {
       }
   }
 
-  getIcons() {
+  userIsLogged() {
+    // if this.state.currentUser is {} then...
+    return Object.keys(this.state.currentUser).length !== 0
+      || this.state.currentUser.constructor !== Object;
+  }
+
+  getActionIcons() {
     var icons = [];
 
     // only show delete option for the respective authors
@@ -179,17 +185,62 @@ class PostCard extends Component {
         </IconButton>
       );
     }
-    icons.push(
-      <IconButton key='star' onClick={this.handleStars}>
-      <StarIcon />
-    </IconButton>
-    );
+
+    // only show star option if the user is logged in
+    if (this.userIsLogged()) {
+      icons.push(
+        <IconButton key='star' onClick={this.handleStars}>
+          <StarIcon />
+        </IconButton>
+      );
+    }
 
     return (
       <div>
         {icons}
       </div>
     );
+  }
+
+  getCommentField() {
+    if (this.userIsLogged()) {
+      return (
+        <div>
+          <Typography component="p">
+            Add a comment:
+          </Typography>
+          <TextField
+            value={this.state.commentDraft}
+            hinttext="Enter your comment"
+            floatinglabeltext="Comment"
+            onChange={(event) => this.setState({ commentDraft: event.target.value })}
+          />
+        </div>
+      );
+    } else {
+      return (
+        <div></div>
+      );
+    }
+  }
+
+  getActionCards() {
+    if (this.userIsLogged()) {
+      return (
+        <CardActions>
+          <Button size="small" color="primary" onClick={this.handleComment}>
+            Post comment
+          </Button>
+          <Button size="small" color="primary" onClick={this.handleFollow}>
+            { this.followStatus() }
+          </Button>
+        </CardActions>
+      );
+    } else {
+      return (
+        <div></div>
+      );
+    }
   }
 
   render() {
@@ -214,7 +265,7 @@ class PostCard extends Component {
                 className={this.classes.avatar}
               />
             }
-            action={this.getIcons()}
+            action={this.getActionIcons()}
             title={this.state.author}
             subheader={'Star count: ' + (this.state.stars ? this.countStars() : 0)}
           />
@@ -228,24 +279,9 @@ class PostCard extends Component {
           <br/>
           {comments}
           <br/>
-          <Typography component="p">
-            Add a comment:
-          </Typography>
-          <TextField
-            value={this.state.commentDraft}
-            hinttext="Enter your comment"
-            floatinglabeltext="Comment"
-            onChange={(event) => this.setState({ commentDraft: event.target.value })}
-          />
+          {this.getCommentField()}
         </CardContent>
-        <CardActions>
-          <Button size="small" color="primary" onClick={this.handleComment}>
-            Post comment
-          </Button>
-          <Button size="small" color="primary" onClick={this.handleFollow}>
-            { this.followStatus() }
-          </Button>
-        </CardActions>
+        {this.getActionCards()}
       </Card>
       </div>
     );
