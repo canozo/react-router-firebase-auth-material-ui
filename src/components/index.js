@@ -99,6 +99,8 @@ class App extends Component {
         label="Logout"
         onClick={() => {
           logout();
+          // TODO recargar la pagina cuando haga logout
+          // this.setState({});
         }}
         style={{ color: '#fff' }}
       >Logout</Button>

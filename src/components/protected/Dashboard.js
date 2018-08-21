@@ -148,6 +148,9 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    // TODO fix this
+    // serverTime will only be set when the page loades
+    // should use offsetval maybe?
     this.dbRefDate = firebase.database().ref('/.info/serverTimeOffset');
     this.dbCallbackDate = this.dbRefDate.on('value', (offset) => {
       var offsetVal = offset.val() || 0;

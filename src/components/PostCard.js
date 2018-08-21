@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { CardHeader, Avatar, IconButton } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import DeleteIcon from '@material-ui/icons/Delete';
+import CachedIcon from '@material-ui/icons/Cached';
 import TextField from '@material-ui/core/TextField';
 import firebase from '../config/constants';
 import Comment from './Comment';
@@ -108,6 +109,27 @@ class PostCard extends Component {
     }
   }
 
+  handleRepost(event) {
+    // structure
+    // +- reposts
+    //     +- user that reposts
+    //         +- all the posts (ids) that the user has reposted
+    // reposts show up everywhere
+    // build the post with the info of the logged user
+    // const rePost = {
+    //   reposter: this.state.currentUser.username,
+    //   reposterid: this.state.currentUser.uid,
+    //   author: this.state.author,
+    //   authorPic: this.state.authorPic,
+    //   body: this.state.body,
+    //   stars: this.state.stars,
+    //   title: this.state.title,
+    //   privacy: this.state.privacy,
+    //   uid: this.state.uid,
+    //   serverTime: this.state.datetime
+    // };
+  }
+
   countStars() {
     var count = 0;
     for (let key in this.state.stars) {
@@ -193,6 +215,11 @@ class PostCard extends Component {
           <StarIcon />
         </IconButton>
       );
+      icons.push(
+        <IconButton key='repost' onClick={this.handleRepost}>
+          <CachedIcon />
+        </IconButton>
+      );
     }
 
     return (
@@ -257,6 +284,9 @@ class PostCard extends Component {
     return (
       <div className='row' dateTime={this.state.datetime.toString()}>
         <Card className={this.classes.card}>
+          <CardHeader
+            subheader='Retweeted by Michael'
+          />
           <CardHeader
             avatar={
               <Avatar
