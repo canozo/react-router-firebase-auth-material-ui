@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Route, Link, Redirect, Switch } from 'react-router-dom';
 import Login from './Login';
-import Register from './Register';
+// import Register from './Register';
 import Home from './Home';
 import Followed from './protected/Followed';
 import MyPosts from './protected/MyPosts';
@@ -107,9 +107,9 @@ class App extends Component {
           <Link to="/login">
             <Button style={{ color: '#fff' }} >Login</Button>
           </Link>
-          <Link to="/register">
+          {/* <Link to="/register">
             <Button style={{ color: '#fff' }} >Register</Button>
-          </Link>
+          </Link> */}
         </span>
       );
 
@@ -158,11 +158,11 @@ class App extends Component {
                     path="/login"
                     component={Login}
                   />
-                  <PublicRoute
+                  {/* <PublicRoute
                     authed={this.state.authed}
                     path="/register"
                     component={Register}
-                  />
+                  /> */}
                   <PrivateRoute
                     authed={this.state.authed}
                     path="/followed"
